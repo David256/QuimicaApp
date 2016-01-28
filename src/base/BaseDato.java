@@ -9,6 +9,13 @@ import javax.swing.JOptionPane;
 
 import quimica.Electrodo;
 
+/**
+ * Esta clase define los métodos necesario para el tratamiento de base de datos
+ * CSV.
+ * 
+ * @author David Elias
+ *
+ */
 public class BaseDato {
 	File file = null;
 	FileReader fr = null;
@@ -17,6 +24,9 @@ public class BaseDato {
 	Vector<String> lineas = new Vector();
 	Vector<Electrodo> ele = new Vector();;
 
+	/**
+	 * Constructor de la clase BaseDato
+	 */
 	public BaseDato() {
 		System.out.println("Se lee la base de datos");
 		try {
@@ -49,6 +59,13 @@ public class BaseDato {
 		}
 	}
 
+	/**
+	 * Convierte todo los datos y los guarda en un objeto de tipo Vector.
+	 * 
+	 * @param lin
+	 * 
+	 * @see java.util.Vector
+	 */
 	private void procesarDato(Vector<String> lin) {
 		for (int i = 1; i < lin.size(); i++) {
 			String linealidad = lin.get(i);
@@ -112,6 +129,15 @@ public class BaseDato {
 		}
 	}
 
+	/**
+	 * Busca un elemnto cuyo valor es igual al dado en el parametro.
+	 * 
+	 * @param textoDe
+	 *            texto a buscar
+	 * @return Objeto Electrodo
+	 * 
+	 * @see quimica.Electrodo
+	 */
 	public Electrodo getElectrodoPorCadena(String textoDe) {
 		if (ele.size() == 0 || ele == null) {
 			System.err
@@ -130,6 +156,13 @@ public class BaseDato {
 		return null;
 	}
 
+	/**
+	 * Retorna un array con toda la información dentro del vector.
+	 * 
+	 * @return array de todo el contenido.
+	 * 
+	 * @see java.util.Vector
+	 */
 	public String[] getTodoEnArray() {
 		String[] paco = new String[ele.size()];
 		System.out.println("Todo se va al Array : " + ele.size());

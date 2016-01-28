@@ -20,15 +20,45 @@ import javax.swing.event.ListSelectionListener;
 
 import quimica.Electrodo;
 import validacion.Cronometro;
-import aplicacion.Best;
 import base.BaseDato;
 
+/**
+ * La clase Ventana es la encargada de dibujar en pantalla una pantalla con
+ * tamaño fijo. Esta clase hereda de la clase JFrame e implementa las interfaces
+ * ActionListener, Runnable y ListSelectionListener: lo que le da a la clase la
+ * posibilidad de persibir las pulsaciones en los botones, también la
+ * posibilidad de correr un método en otro hilo y finalmente la interfaz que
+ * permite detectar selección en objecto de la clase Lista.
+ * 
+ * @see Javax.swing.JFrame
+ * @see java.awt.event.ActionListener
+ * @see java.lang.Runnable
+ * @see javax.swing.event.ListSelectionListener
+ * 
+ * @author David Elias
+ * @version 4.4
+ */
 public class Ventana extends JFrame implements ActionListener, Runnable,
 		ListSelectionListener {
+
+	/**
+	 * Hace referencia a un objeto de la clase Capa, el cual permite agregar
+	 * objetos de tipo Component.
+	 * 
+	 * @see java.awt.Component
+	 */
 	private Capa capa = new Capa();
+
 	private JLabel btnHelp = new JLabel("Help!");
 	private Boton btnCalcular = new Boton("Balance Equation");
 	private Boton btnGraficar = new Boton("Graph");
+
+	/**
+	 * Este es un objeto de la clase Laboratorio que permite visualizar un
+	 * ejemplar de un laboratorio.
+	 * 
+	 * @see grafica.Laboratorio
+	 */
 	public Laboratorio labs = new Laboratorio();
 
 	// ahora creamos las entradas de textos
@@ -45,6 +75,7 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 	private Entrada txtTemperatura = new Entrada("273"); // entrada de
 															// temperatura
 	private Entrada txtPresion = new Entrada("1"); // entrada de presion
+
 	// ahora la concentración
 	private Entrada enA = new Entrada(); // concentracion A
 	private Entrada enB = new Entrada(); // B
@@ -59,7 +90,6 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 	/*
 	 * Ahora definimos los Label o etiquetas
 	 */
-
 	private Etiqueta titulo = new Etiqueta("Electrochemical");
 	private Etiqueta lblElemento = new Etiqueta("Element:");
 	private Etiqueta lblValorValorE = new Etiqueta("E° = 0V");
@@ -88,6 +118,9 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 	private String globalE = "";
 	private String voltajePila = "0";
 
+	/**
+	 * Constructor de la clase Ventana
+	 */
 	public Ventana() {
 		/*
 		 * Referido a nada en especifico
@@ -150,11 +183,10 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 		capa.add(titulo);
 
 		/*
-		 * 
-		 * 
 		 * Referido a la entrada de datos para comenzar, esto es lo más
 		 * importante en la vida
 		 */
+
 		// LABEL ELEMENTO
 		lblElemento.setBounds(20, 80, 200, 25);
 		lblElemento.setFont(new Font("consolas", Font.CENTER_BASELINE, 14));
@@ -289,11 +321,15 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 
 	}
 
+	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.drawLine(550, 383, 750, 383);
 	}
 
+	/**
+	 * Método encargado de activar la escucha a evento en los dos botones
+	 */
 	private void escucharTodo() {
 		btnCalcular.addActionListener(this);
 		btnGraficar.addActionListener(this);
@@ -340,6 +376,7 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 		}
 
 		if (origen == btnGraficar) {
+			// TODO: esto no está bien definido, no da lo que debe hacer :/
 			/*
 			 * int ss=JOptionPane.showConfirmDialog(null,
 			 * "Do you make sure?, the function of graph doesn't work well");
@@ -350,20 +387,35 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 			 * CeldaA(Double.parseDouble(this.enA.getText()) - i))); } VGrafica
 			 * gg = new VGrafica(dominio); gg.setVisible(true);
 			 */
-			Best goo = new Best();
+
+			// Best goo = new Best();
 
 			for (double i = 0.1; i <= 2.0; i = i + 0.1) {
 				double vol = Double.parseDouble(CeldaA(i));
 				String etiqueta = Double.toString(i);
 				String linea = "volt";
 				String[] todo = { Double.toString(vol), linea, etiqueta };
-				goo.setPartes(todo);
+				// goo.setPartes(todo);
 			}
-			goo.init();
+			// goo.init();
 		}
 
 	}
 
+	/**
+	 * Este método compara el potencial energetico (de preferencia, general) y
+	 * saca la diferencia. Unos de los problemas que puede pasar es que se haya
+	 * escogido dos elementos con igual potencial, dando valores fuera de lo
+	 * esperado. Al final retornamos la diferencia.
+	 * 
+	 * @param celdaA
+	 *            String obtenido de la GUI, correspondiete el potencial de la
+	 *            celda A
+	 * @param celdaB
+	 *            String obtenido de la GUI, correspondiete el potencial de la
+	 *            celda B
+	 * @return valor Double que indica la diferencia de potencial
+	 */
 	private String procesarDiferentialPotencia(String celdaA, String celdaB) {
 		String valor = "";
 
@@ -384,6 +436,22 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 		return valor;
 	}
 
+	/**
+	 * Este método "balancea". Su función es balancear mediante técnicas de
+	 * manejo de String, con un simple algoritmo la función puede balancear con
+	 * certeza.
+	 * 
+	 * @param AA
+	 *            Objeto de tipo Electrodo, referido a la semicelda A
+	 * @param BB
+	 *            Objeto de tipo Electrodo, referido a la semicelda B
+	 * @param A
+	 *            String que indica el coeficiente de la molecula A
+	 * @param B
+	 *            String que indica el coeficiente de la molecula A
+	 * @return String que representa una ecuación química balanceada y
+	 *         marquetada con HTML
+	 */
 	private String procesarBalance(Electrodo AA, Electrodo BB, String A,
 			String B) {
 		String todo = "";
@@ -531,6 +599,12 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 		}
 	}
 
+	/**
+	 * Este método se encarga de actualizar el valor String de otros objetos de
+	 * tipo Entrada (que hereda de la clase JTextField). Todo esto para mostrar
+	 * en tiempo real el exponente tomado de la información que el usuario da
+	 * cuando selecciona los elementos con quién quiere trabajar.
+	 */
 	private void actualizarExponentes() {
 		try {
 			int primero = Integer.parseInt(eee2.eletron);
@@ -549,6 +623,13 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 
 	}
 
+	/**
+	 * Este método actualiza la información que se verá en la simulación de
+	 * laboratorio, el cuál se lleva a cabo mediante el objeto labs de tipo
+	 * Laboratorio.
+	 * 
+	 * @see grafica.Laboratorio
+	 */
 	private void actualLab() {
 		if (!eee1.cadena.equals("") && !eee1.cadena.equals("")) {
 			labs.setL1(eee1.cadena);
@@ -568,6 +649,11 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 
 	}
 
+	/**
+	 * Este método se usa para evitar errores en fúturas conversiones de tipo de
+	 * datos: de String a Int. Todo esto, porque cuando el exponente es 1 se
+	 * suele no escribir. Pero, en matemática es muy importante el valor 1.
+	 */
 	private void validaCelda() {
 		if (this.enA.getText().equals("")) {
 			this.enA.setText("1");
@@ -603,6 +689,12 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 
 	}
 
+	/**
+	 * Este método calcula el voltaje relativo de la celda. Toma valores como la
+	 * temperatura, concentración, etc.
+	 * 
+	 * @return voltajePila es el voltaje real de la pila.
+	 */
 	private String calcularCelda() {
 		String valor = "0";
 		double logaritmo = 0.0;
@@ -627,6 +719,7 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 		return valor;
 	}
 
+	// TODO: mirar que se hace con este método de la sección de gráfico
 	private String CeldaA(double SS) {
 		String valor = "0";
 		double logaritmo = 0.0;
@@ -651,6 +744,17 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 		return valor;
 	}
 
+	/**
+	 * Procesa las dos semicelda y obtiene un formato legible marquetado en
+	 * HTML.
+	 * 
+	 * @param eee1
+	 *            Representa la celda 1
+	 * @param eee2
+	 *            Representa la celda 2
+	 * 
+	 * @return String de la formula formateada y marquetada con HTML
+	 */
 	private String procesarTexto(Electrodo eee1, Electrodo eee2) {
 		String cadena = "<html><p size='9' face='verdana'>";
 		cadena = cadena + prepocesarSub(eee1);
@@ -660,6 +764,17 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 		return cadena;
 	}
 
+	/**
+	 * Este método convierte un objeto con la información de la molecula, en una
+	 * semi-formula. EL objeto Electrodo tiene información sobre el elemento,
+	 * coheficiente, exponente, etc. Luego esto es convertido en un formato
+	 * legible.
+	 * 
+	 * @param eee1
+	 *            Objeto Electrodo a transformar a formato legible.
+	 * @return String cadena con formato legible para el usuario marquetado en
+	 *         HTML
+	 */
 	private String prepocesarSub(Electrodo eee1) {
 		String cadena = "";
 		// agregamos los coeficiente 1

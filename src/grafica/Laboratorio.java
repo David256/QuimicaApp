@@ -5,6 +5,14 @@ import java.awt.Graphics;
 
 import javax.swing.JFrame;
 
+/**
+ * La clase Laboratorio hereda de la clase JFrame, y es usada para crear un
+ * ventana que muestra un ejemplar de laboratorio químico. Esto visualiza el
+ * comportamiento de las reacciones, información del voltaje, etc.
+ * 
+ * @author David Elias
+ * @version 1.5
+ */
 public class Laboratorio extends JFrame implements Runnable {
 	private String lbl1 = "element 1";
 	private String lbl2 = "element 2";
@@ -26,6 +34,9 @@ public class Laboratorio extends JFrame implements Runnable {
 	private final Color CO3 = new Color(70, 115, 75);
 	private final Color SAL = new Color(205, 205, 205);
 
+	/**
+	 * Constructor de la clase Laboratorio
+	 */
 	public Laboratorio() {
 		setTitle("Eletro-Labs");
 		setSize(500, 400);
@@ -137,6 +148,21 @@ public class Laboratorio extends JFrame implements Runnable {
 		}
 	}
 
+	// TODO: mejorar esta documentación
+	/**
+	 * Este método dibuja el nivel de liquido en el recipiente.
+	 * 
+	 * @param color
+	 *            Color de la sustancia.
+	 * @param g
+	 *            Objeto de tipo Graphics.
+	 * @param x
+	 *            Variable X que indica la posición donde será dibujado.
+	 * @param y
+	 *            Variable Y que indica la posición donde será dibujado.
+	 * @param valor
+	 *            Valor de la cantidad de liquido en el recipiente.
+	 */
 	public void dibujarLiquido(Color color, Graphics g, int x, int y, int valor) {
 		g.setColor(color);
 		int newX = x + 3;
@@ -145,22 +171,47 @@ public class Laboratorio extends JFrame implements Runnable {
 		g.setColor(Color.black);
 	}
 
+	/**
+	 * Fija valor de etiqueta 1
+	 * 
+	 * @param l
+	 */
 	public void setL1(String l) {
 		this.lbl1 = l;
 	}
 
+	/**
+	 * Fija valor de etiqueta 2
+	 * 
+	 * @param l
+	 */
 	public void setL2(String l) {
 		this.lbl2 = l;
 	}
 
+	/**
+	 * Fija valor de Voltios
+	 * 
+	 * @param v
+	 */
 	public void setV(String v) {
 		this.volts = v;
 	}
 
+	/**
+	 * Fija valor de eletrones 1
+	 * 
+	 * @param e
+	 */
 	public void setE1(String e) {
 		this.e1 = e;
 	}
 
+	/**
+	 * Fija valor de electrones 2
+	 * 
+	 * @param e
+	 */
 	public void setE2(String e) {
 		this.e2 = e;
 	}
