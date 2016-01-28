@@ -389,7 +389,9 @@ public class Ventana extends JFrame implements ActionListener, Runnable,
 			 */
 
 			// Best goo = new Best();
-
+			JOptionPane.showMessageDialog(this,
+					"Not implemented, then returns.", "Wait!",
+					JOptionPane.WARNING_MESSAGE);
 			for (double i = 0.1; i <= 2.0; i = i + 0.1) {
 				double vol = Double.parseDouble(CeldaA(i));
 				String etiqueta = Double.toString(i);
